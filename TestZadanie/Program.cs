@@ -34,18 +34,23 @@ else if (mode == "клиент")
         return;
     }
 
+    Console.Write("Порт сервера: ");
     if (!int.TryParse(Console.ReadLine(), out int port) || port < 1 || port > 65535)
     {
         Console.WriteLine("Некорректный порт");
         return;
     }
 
+
+    Console.Write("Скорость пакетов в секунду: ");
     if (!int.TryParse(Console.ReadLine(), out int speed) || speed <= 0)
     {
         Console.WriteLine("Скорость должна быть больше 0");
         return;
     }
 
+
+    Console.Write("Размер пакета: ");
     if (!int.TryParse(Console.ReadLine(), out int size) || size < 24)
     {
         Console.WriteLine("Размер пакета должен быть не меньше 24 байт");
