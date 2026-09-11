@@ -1,5 +1,6 @@
-﻿using TestZadanie;
+﻿using System.Net;
 using System.Net.Sockets;
+using TestZadanie;
 
 Console.WriteLine("Тестер UDP сети");
 Console.Write("Режим (сервер/клиент): ");
@@ -11,7 +12,9 @@ using var cts = new CancellationTokenSource();
 if (mode == "сервер")
 {
     Console.Write("Порт: ");
-    if (!int.TryParse(Console.ReadLine(), out int port))
+    if (!int.TryParse(Console.ReadLine(), out int port)
+        || port < 1
+        || port > 65535)
     {
         Console.WriteLine("Некорректный порт");
         return;
@@ -24,12 +27,30 @@ else if (mode == "клиент")
 {
     Console.Write("IP сервера: ");
     var ip = Console.ReadLine()!;
-    Console.Write("Порт сервера: ");
-    int port = int.Parse(Console.ReadLine()!);
-    Console.Write("Пакетов в секунду: ");
-    int speed = int.Parse(Console.ReadLine()!);
-    Console.Write("Размер пакета: ");
-    int size = int.Parse(Console.ReadLine()!);
+
+    if (!IPAddress.TryParse(ip, out _))
+    {
+        Console.WriteLine("Некорректный IP адрес");
+        return;
+    }
+
+    if (!int.TryParse(Console.ReadLine(), out int port) || port < 1 || port > 65535)
+    {
+        Console.WriteLine("Некорректный порт");
+        return;
+    }
+
+    if (!int.TryParse(Console.ReadLine(), out int speed) || speed <= 0)
+    {
+        Console.WriteLine("Скорость должна быть больше 0");
+        return;
+    }
+
+    if (!int.TryParse(Console.ReadLine(), out int size) || size < 24)
+    {
+        Console.WriteLine("Размер пакета должен быть не меньше 24 байт");
+        return;
+    }
 
     var client = new Client(ip, port, speed, size);
     _ = client.StartAsync(cts.Token);

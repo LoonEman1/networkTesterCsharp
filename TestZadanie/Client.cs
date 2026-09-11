@@ -77,7 +77,7 @@ namespace TestZadanie
                 await Task.Delay(1000);
                 Console.WriteLine($"Отправлено пакетов: {sent}, байт: {bytes}");
                 File.AppendAllText("Logs/client.csv",
-                    $"{DateTime.Now},{sent},{bytes}\n");
+                    $"{DateTime.Now};{sent};{bytes};{speed}\n");
             }
         }
     }
